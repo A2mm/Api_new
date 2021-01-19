@@ -58,7 +58,7 @@ class User extends Authenticatable implements JWTSubject
     {
         return [];
     }
-    
+
      public function getAvatarAttribute($value)
     {
         if($value != null)
@@ -74,6 +74,14 @@ class User extends Authenticatable implements JWTSubject
     public function getAgeAttribute()
     {
         return Carbon::parse($this->date_of_birth)->age;
+    }
+
+    public function getPhoneNumberAttribute($value)
+    {
+        $item         = Country::where('iso', $this->country_code)->select('phonecode')->first();
+        $len          = strlen($item->phonecode);
+        $phone_number = substr($this->phone_number, $len);
+        return $phone_number;
     }
 
 }
