@@ -34,7 +34,7 @@ class CustomerController extends StructureController
     		 return $this->respond(['errors' => ['phone number already taken'], 'status_code' => 400], 400);
     	}
 
-        	// check if phone starts with desired format(E.164)
+        	// check if phone starts with desired format(E.164) according to selected Country Code
         	$checkResult = check_e164Format($request->country_code, $request->phone_number);
  
         	if($checkResult)  // if e.164 format fails
