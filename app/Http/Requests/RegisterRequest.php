@@ -33,7 +33,7 @@ class RegisterRequest extends FormRequest
             'gender'              => ['required', Rule::in('female','male')],
             'date_of_birth'       => ['required', 'date_format:Y-m-d', 'before:today'],
             'avatar'              => ['required', 'image', 'mimes:jpeg,png,jpg'],
-            'email'               => ['email', 'unique:users'],
+            'email'               => ['nullable', 'email', 'unique:users'],
             'country_code'        => ['required_with:phone_number', 'exists:countries,iso'],
             'phone_number'        => ['required_with:country_code', 'unique:users', 'min:10', 'max:15'],
         ];
