@@ -22,40 +22,10 @@ class CustomerController extends StructureController
     }
 
 /* start register*/
-    public function register(Request $request)
+    public function register(RegisterRequest $request)
     {
-    	$messages = [
-    		'first_name.required'   => 'blank',
-            'last_name.required'    => 'blank',
-            'phone_number.required' => 'blank',
-            'phone_number.unique'    => 'taken',
-            'phone_number.min'       => 'too short',
-            'phone_number.max'       => 'too long',
-            'avatar.required'        => 'blank',
-            'email.unique'           => 'taken',
-            'email.email'            => 'invalid',
-            'date_of_birth.before'   => 'in_the_future',
-            'date_of_birth.required' => 'blank',
-            'avatar.mimes'           => 'invalid_content_type',
-    	];
-         $validator = Validator::make($request->all(), [
-        	'first_name'          => ['required'],
-        	'last_name'           => ['required'],
-        	'gender'              => ['required', Rule::in('female','male')],
-        	'date_of_birth'       => ['required', 'date_format:Y-m-d', 'before:today'],
-        	'avatar'              => ['required', 'image', 'mimes:jpeg,png,jpg'],
-        	'email'               => ['email', 'unique:users'],
-            'country_code'        => ['required_with:phone_number', 'exists:countries,iso'],
-            'phone_number'        => ['required_with:country_code', 'unique:users', 'min:10', 'max:15'],
-        ], $messages);
-
-// chech for valid credentials
-
-        if($validator->fails()) {
-        	return response()->json(['errors' => $validator->errors(), 'status_code' => 400], 400);
-        }
-        else{
-
+    	// all validation belongs to request RegisterRequest
+    	
         	// check if phone starts with desired format(E.164)
         	$checkResult = check_e164Format($request->country_code, $request->phone_number);
  
@@ -99,7 +69,7 @@ class CustomerController extends StructureController
 	                	return $this->respond(['data' => $user, 'status_code' => 201], 201);
 	                }
 	        }
-        }
+      //  }
     } /* end register*/
 
     public function login(Request $request)
