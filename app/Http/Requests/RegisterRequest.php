@@ -2,8 +2,9 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Http\Request;
+use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
+use Illuminate\Http\Request;
 
 class RegisterRequest extends Request
 {
@@ -14,7 +15,7 @@ class RegisterRequest extends Request
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +25,7 @@ class RegisterRequest extends Request
      */
     public function rules()
     {
-        return $validator = [
+        return [
             'first_name'          => ['required'],
             'last_name'           => ['required'],
             'gender'              => ['required', Rule::in('female','male')],

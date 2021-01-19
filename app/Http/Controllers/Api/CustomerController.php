@@ -52,7 +52,7 @@ class CustomerController extends StructureController
 // chech for valid credentials
 
         if($validator->fails()) {
-            return $this->getErrorMessage($validator);
+        	return response()->json(['errors' => $validator->errors(), 'status_code' => 400], 400);
         }
         else{
 
