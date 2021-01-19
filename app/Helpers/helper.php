@@ -5,6 +5,7 @@
     use LaravelFCM\Message\PayloadNotificationBuilder;
     use App\User;
     use App\Models\Country;
+    use Propaganistas\LaravelPhone\PhoneNumber;
 
     // use DB;
 
@@ -56,5 +57,21 @@
     }
     //=== End Function ===
 
+     // === Check if phone already exists ===
+    function isUniquePhone($phone, $countryCode)
+    {
+        $db_format = PhoneNumber::make($phone, $countryCode)->formatE164();
+        $unique    = User::where('phone_number', $db_format)->first();
+        
+        if($unique)
+        {
+            return false;
+        }
+        else
+        {
+            return true;
+        }
+    }
+    //=== End Function ===
    
 ?>

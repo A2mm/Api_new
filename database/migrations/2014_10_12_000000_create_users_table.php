@@ -24,7 +24,7 @@ class CreateUsersTable extends Migration
             $table->string('password');
             $table->string('avatar')->nullable();
             $table->string('country_code');
-            $table->string('phone_number');
+            $table->string('phone_number'); //->unique();
             $table->rememberToken();
             $table->timestamps();
         });

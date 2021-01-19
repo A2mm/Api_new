@@ -7,6 +7,8 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Notifications\Notifiable;
 use Carbon\Carbon;
+use App\Models\Country; 
+use Propaganistas\LaravelPhone\PhoneNumber;
 
 class User extends Authenticatable implements JWTSubject
 {
@@ -78,10 +80,16 @@ class User extends Authenticatable implements JWTSubject
 
     public function getPhoneNumberAttribute($value)
     {
-        $item         = Country::where('iso', $this->country_code)->select('phonecode')->first();
-        $len          = strlen($item->phonecode);
-        $phone_number = substr($this->phone_number, $len);
+     //   $item         = Country::where('iso', $this->country_code)->select('phonecode')->first();
+
+        $phone_number  = PhoneNumber::make($value, $this->country_code)->formatNational();
+
+
+        //$len          = strlen($item->phonecode);
+        // $phone_number = substr($value, $len);
         return $phone_number;
+
+        
     }
 
 }

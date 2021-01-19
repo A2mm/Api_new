@@ -25,13 +25,21 @@ class CustomerController extends StructureController
     public function register(RegisterRequest $request)
     {
     	// all validation belongs to request RegisterRequest
-    	
+
+    	// search for number in DB with Format
+    	$uniqueResult = isUniquePhone($request->phone_number, $request->country_code);
+    	// if number already taken 
+    	if (!$uniqueResult) 
+    	{
+    		 return $this->respond(['errors' => ['phone number already taken'], 'status_code' => 400], 400);
+    	}
+
         	// check if phone starts with desired format(E.164)
         	$checkResult = check_e164Format($request->country_code, $request->phone_number);
  
         	if($checkResult)  // if e.164 format fails
         	{
-                   return $this->respond(['message' => [$checkResult], 'status_code' => 400], 400);
+                   return $this->respond(['errors' => [$checkResult], 'status_code' => 400], 400);
             }
             else{    // if e.164 format pass
 
@@ -48,7 +56,7 @@ class CustomerController extends StructureController
 	                	$upload_image = uploadImage($request->avatar, $this->upload_folder);
 				        if($upload_image == false)
 				        {
-				            return $this->respond(['message' => ['invalid image extension'], 'status_code' => 400], 400);
+				            return $this->respond(['errors' => ['invalid image extension'], 'status_code' => 400], 400);
 				        }
 				        
 	                	$user = User::create([
@@ -60,7 +68,7 @@ class CustomerController extends StructureController
 	                		'date_of_birth' => $request->date_of_birth,
 	                		'avatar'        => $upload_image,
 	                		'country_code'  => $request->country_code,
-	                		'phone_number'         => PhoneNumber::make($request->phone_number, $request->country_code)->formatE164(),
+	                		'phone_number'  => PhoneNumber::make($request->phone_number, $request->country_code)->formatE164(),
 	                	]);
 
 	                	 $token = JWTAuth::fromUser($user);
@@ -94,7 +102,7 @@ class CustomerController extends StructureController
         $data = Country::take(1)->get(['id', 'name', 'iso', 'iso3', 'phonecode']);
         $user = $this->getAuthenticatedUser();
         if ($user->phone_number != $request->phone_number) {
-        	return $this->respond(['message' => ['token does not belong to phone number'], 'status_code' => 400], 400);
+        	return $this->respond(['errors' => ['token does not belong to phone number'], 'status_code' => 400], 400);
         }
         $data['user'] = $user;
         return $this->respond(['data' => $data, 'status_code' => 200], 200);
