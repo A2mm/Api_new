@@ -42,18 +42,19 @@ class RegisterRequest extends FormRequest
      public function messages()
     {
         return [
-            'first_name.required'    => 'blank',
-            'last_name.required'     => 'blank',
-            'phone_number.required'  => 'blank',
-            'phone_number.unique'    => 'taken',
-            'phone_number.min'       => 'too short',
-            'phone_number.max'       => 'too long',
-            'avatar.required'        => 'blank',
-            'email.unique'           => 'taken',
-            'email.email'            => 'invalid',
-            'date_of_birth.before'   => 'in_the_future',
-            'date_of_birth.required' => 'blank',
-            'avatar.mimes'           => 'invalid_content_type',
+            'first_name.required'         => ['error' => 'blank'],
+            'last_name.required'          => ['error' => 'blank'],
+            'phone_number.required'       => ['error' => 'blank'],
+            'phone_number.unique'         => ['error' => 'taken'], 
+            'phone_number.min'            => ['error' => 'too short'], 
+            'phone_number.max'            => ['error' => 'too long'],
+            'avatar.required'             => ['error' => 'blank'],
+            'email.unique'                => ['error' => 'taken'],
+            'email.email'                 => ['error' => 'invalid'],
+            'date_of_birth.before'        => ['error' => 'in_the_future'],
+            'date_of_birth.date_format'   => ['error' => 'invalid_date_format'],
+            'date_of_birth.required'      => ['error' => 'blank'], 
+            'avatar.mimes'                => ['error' => 'invalid_content_type'], 
         ];
     }
 

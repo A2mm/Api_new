@@ -68,7 +68,7 @@ class CustomerController extends StructureController
 	                		'date_of_birth' => $request->date_of_birth,
 	                		'avatar'        => $upload_image,
 	                		'country_code'  => $request->country_code,
-	                		'phone_number'  => PhoneNumber::make($request->phone_number, $request->country_code)->formatE164(),
+	                		'phone_number'  => PhoneNumber::make($request->phone_number, $request->country_code)->formatE164(), // save phone in format E.164
 	                	]);
 
 	                	 $token = JWTAuth::fromUser($user);
